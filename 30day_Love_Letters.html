@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>30-Day Warm Hug Journey</title>
+<style>
+  :root{
+    --bg:#f9efe6;
+    --card:#fff7f2;
+    --accent:#ff6b81;
+    --text:#5a4634;
+    --muted:#b79a87;
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: 'Segoe Script', cursive;
+    background: linear-gradient(180deg,#fff7f2 0%, #f3e9d7 100%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  #wrap{
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:30px;
+  }
+
+  #container{
+    width:92%;
+    max-width:540px;
+    background:var(--card);
+    border-radius:22px;
+    padding:28px;
+    box-shadow: 0 12px 30px rgba(90,70,52,0.08);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+
+  h1{
+    margin:0 0 10px 0;
+    color:var(--text);
+    font-size:26px;
+  }
+
+  #dateDay{ color:var(--muted); margin-bottom:14px; font-size:14px; }
+
+  #puzzleDiv p{
+    font-size:18px;
+    color:var(--text);
+    margin:8px 0 12px 0;
+  }
+
+  input#answerInput{
+    width:68%;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid #e6d2c6;
+    font-size:16px;
+    outline:none;
+    box-sizing:border-box;
+  }
+
+  button.action{
+    padding:10px 18px;
+    font-size:16px;
+    border-radius:12px;
+    border:none;
+    background:var(--accent);
+    color:white;
+    cursor:pointer;
+    margin-left:10px;
+    box-shadow: 0 6px 14px rgba(255,107,129,0.18);
+    transition: transform .12s ease;
+  }
+  button.action:active{ transform: translateY(2px); }
+
+  #heart{
+    font-size:56px;
+    color:#ff4f9a;
+    opacity:0;
+    transform:scale(.8);
+    transition: opacity .6s ease, transform .6s ease;
+    margin-top:12px;
+  }
+
+  #letter{
+    display:none;
+    text-align:left;
+    margin-top:18px;
+    color:var(--text);
+    font-size:17px;
+    white-space:pre-line;
+    line-height:1.45;
+    border-radius:12px;
+    padding:12px;
+    background: linear-gradient(180deg, rgba(255,245,247,0.7) 0%, rgba(255,250,249,0.5) 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+
+  /* Next button (cute) */
+  #nextButtonWrap{
+    display:none;
+    margin-top:16px;
+    text-align:center;
+  }
+  #nextButton{
+    padding:12px 22px;
+    border-radius:18px;
+    border:none;
+    background:linear-gradient(90deg,#ff89a9,#ff6b81);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow: 0 10px 22px rgba(255,107,129,0.18);
+    font-family: 'Segoe Script', cursive;
+  }
+
+  /* Modal tiny for "see you tomorrow" */
+  #modal{
+    position:fixed;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%) scale(.9);
+    background:var(--card);
+    padding:20px 18px;
+    border-radius:14px;
+    box-shadow:0 18px 40px rgba(90,70,52,0.15);
+    display:none;
+    text-align:center;
+    z-index:1200;
+  }
+  #modal p{ margin:0 0 10px 0; color:var(--text); font-size:16px; }
+  #modal button{ padding:8px 14px; border-radius:10px; border:none; background:var(--accent); color:white; cursor:pointer;}
+
+  /* Fireworks canvas overlay */
+  #fireworksCanvas{
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:1000;
+    display:none;
+  }
+
+  /* small responsive tweaks */
+  @media (max-width:420px){
+    #container{ padding:18px; border-radius:18px; }
+    input#answerInput{ width:58%; }
+    h1{ font-size:22px; }
+  }
+</style>
+</head>
+<body>
+  <canvas id="fireworksCanvas"></canvas>
+
+  <div id="wrap">
+    <div id="container">
+      <h1>Good Morning, Baccha 🌸</h1>
+      <div id="dateDay"></div>
+
+      <div id="puzzleDiv">
+        <p id="puzzleText"></p>
+        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:6px;">
+          <input id="answerInput" autocomplete="off" placeholder="Type your answer" />
+          <button class="action" id="submitBtn">Submit</button>
+        </div>
+      </div>
+
+      <div id="heart">❤️</div>
+
+      <div id="letter"></div>
+
+      <div id="nextButtonWrap">
+        <button id="nextButton">Next Letter Tomorrow 💕</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal">
+    <p>See you tomorrow, my Mithudiii 💖</p>
+    <button id="closeModal">OK</button>
+  </div>
+
+<script>
+/* ------------------------
+   30 letters array (full)
+   ------------------------ */
+const letters = [
+{puzzle:"What feels like home but isn’t a place?", answer:"You", text:`My Baccha,\n\nI don’t know how the world will look today, but I know the first thing my heart wanted was to hug you in words.\n\nA soft, cozy, dreamy kind of hug… the one where your head rests on my chest, my arms wrap around you like a blanket, and silence feels like music.\n\nYou’re my peace, my little universe, my Chota Don, the cutest chaos I ever fell for.\n\n— Your Alien`},
+
+{puzzle:"Small word, big effect on my heart?", answer:"Hug", text:`Hey Mithudiii,\n\nA hug can say what words cannot… it’s my way of telling you that you belong to me, in the softest, warmest way.\n\nFeel my heart reach you across the distance.\n\n— Your Alien`},
+
+{puzzle:"Emoji hint: 🪐❤️✨ = ?", answer:"You", text:`My Chota Don,\n\nYou are my universe, my little sparkle, my everything. Each time I see you smile, it’s like stars are shining just for us.\n\n— Your Alien`},
+
+{puzzle:"My morning coffee is warm, my heart is warmer because…?", answer:"You", text:`Good morning Baccha,\n\nEven my coffee feels shy compared to the warmth your smile gives me. Every sip reminds me of your little laugh and your magical eyes.\n\n— Alien`},
+
+{puzzle:"A sound that melts my heart?", answer:"Your laugh", text:`Mithudiii,\n\nYour laugh is like tiny stars bursting in my universe. Each time I hear it, I feel closer, cozy, and infinitely happy.\n\n— Your Alien`},
+
+{puzzle:"Favorite little chaos of mine?", answer:"You", text:`Chota Don,\n\nAmong all chaos in this world, your tiny chaos makes my days lively and my heart peaceful at the same time. \n\n— Alien`},
+
+{puzzle:"What’s soft, warm, and always with me?", answer:"Your hug", text:`My Baccha,\n\nNothing beats the softness of your hug in my mind, wrapping me with comfort even when miles apart.\n\n— Alien`},
+
+{puzzle:"A tiny spark that lights up my day?", answer:"Your smile", text:`Hey Mithudiii,\n\nJust one glance of your smile, and my whole day shines brighter than any sun.\n\n— Your Alien`},
+
+{puzzle:"Emoji hint: ☕❤️🫂 = ?", answer:"Hot chocolate", text:`Baccha,\n\nToday I wish I could hand you a warm cup of chocolate along with my arms around you, soft, cozy, and comforting.\n\n— Your Alien`},
+
+{puzzle:"Something I think of before sleeping?", answer:"You", text:`Chota Don,\n\nBefore I close my eyes, your little face dances in my mind. My last thought is always your warm hug.\n\n— Alien`},
+
+{puzzle:"Soft words that heal?", answer:"I love you", text:`Baccha,\n\nThree little words, infinite warmth. Say them, hear them, feel them… that’s my entire universe.\n\n— Your Alien`},
+
+{puzzle:"Favorite star in my sky?", answer:"You", text:`Mithudiii,\n\nEven all stars in the sky pale when I think of you. You shine the brightest in my heart.\n\n— Alien`},
+
+{puzzle:"Tiny flutter in my chest?", answer:"You", text:`Chota Don,\n\nEvery message from you makes my heart skip in tiny flutters. Your existence is my joy.\n\n— Alien`},
+
+{puzzle:"What do I carry wherever I go?", answer:"Your love", text:`Baccha,\n\nEven if miles separate us, your love stays in my heart, warm and comforting.\n\n— Alien`},
+
+{puzzle:"Softest place in my world?", answer:"Your arms", text:`Mithudiii,\n\nWhen I think of safety and peace, your arms are the first thing I imagine, wrapping me in warmth.\n\n— Your Alien`},
+
+{puzzle:"My favorite little rebellion?", answer:"Your jokes", text:`Chota Don,\n\nYour silly little jokes make me laugh like no one else, making ordinary days magical.\n\n— Alien`},
+
+{puzzle:"Magic word that lifts me?", answer:"Love", text:`Baccha,\n\nJust one word — love — and my heart soars with happiness because it’s you giving it to me.\n\n— Your Alien`},
+
+{puzzle:"Tiny warmth in winter?", answer:"Your hands", text:`Mithudiii,\n\nEven winter feels cozy when I think of your little hands wrapped in mine.\n\n— Alien`},
+
+{puzzle:"Emoji hint: 🌙✨❤️ = ?", answer:"You", text:`Chota Don,\n\nWhen night comes, your memories shine like stars in my heart, bright and comforting.\n\n— Alien`},
+
+{puzzle:"Morning melody?", answer:"Your voice", text:`Baccha,\n\nThe softest sound in my world is your little voice, waking my heart gently every morning.\n\n— Alien`},
+
+{puzzle:"Tiny piece of heaven?", answer:"Your smile", text:`Mithudiii,\n\nA glance of your smile feels like a tiny paradise I can carry everywhere.\n\n— Alien`},
+
+{puzzle:"Secret ingredient to happiness?", answer:"You", text:`Chota Don,\n\nAll my joy mixes in thoughts of you — simple, sweet, and infinite.\n\n— Alien`},
+
+{puzzle:"Favorite little adventure?", answer:"Your company", text:`Baccha,\n\nEven a walk in silence with you feels like the greatest adventure.\n\n— Your Alien`},
+
+{puzzle:"Soft glow in my life?", answer:"Your eyes", text:`Mithudiii,\n\nLooking into your eyes is like sunlight kissing my heart, warm and tender.\n\n— Alien`},
+
+{puzzle:"Tiny surprise that excites?", answer:"Your hugs", text:`Chota Don,\n\nEvery unexpected hug from you makes my day instantly brighter.\n\n— Alien`},
+
+{puzzle:"Emoji hint: 🥰☕🫂 = ?", answer:"You", text:`Baccha,\n\nYou are the warm cup, the cozy hug, the little smile that completes my day.\n\n— Alien`},
+
+{puzzle:"Soft whisper in my heart?", answer:"I love you", text:`Mithudiii,\n\nEvery whispered 'I love you' from you echoes endlessly in my heart, soft and infinite.\n\n— Alien`},
+
+{puzzle:"Tiny heartbeat reminder?", answer:"You", text:`Chota Don,\n\nEven in silence, your thoughts make my heart race gently with joy.\n\n— Alien`},
+
+{puzzle:"Favorite comfort in chaos?", answer:"Your presence", text:`Baccha,\n\nNo matter how noisy the world is, your presence calms me completely, like a warm blanket.\n\n— Your Alien`},
+
+{puzzle:"Soft magic I carry daily?", answer:"Your love", text:`Mithudiii,\n\nEven unseen, your love flows around me, making each day tender and dreamy.\n\n— Alien`}];
+
+/* ------------------------
+   Day calculation (7AM based)
+   ------------------------ */
+let startDate = new Date();
+startDate.setHours(7,0,0,0);
+let today = new Date();
+let day = Math.floor((today - startDate)/(1000*60*60*24));
+if(day < 0) day = 0;
+if(day > letters.length - 1) day = letters.length - 1;
+
+/* ------------------------
+   DOM refs & initial display
+   ------------------------ */
+const puzzleText = document.getElementById('puzzleText');
+const puzzleDiv = document.getElementById('puzzleDiv');
+const letterDiv = document.getElementById('letter');
+const heart = document.getElementById('heart');
+const dateDay = document.getElementById('dateDay');
+const nextButtonWrap = document.getElementById('nextButtonWrap');
+const nextButton = document.getElementById('nextButton');
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('closeModal');
+
+function showPuzzle(){
+  const todayLetter = letters[day];
+  const date = new Date(startDate.getTime() + day * 24*60*60*1000);
+  const dd = String(date.getDate()).padStart(2,'0');
+  const mm = String(date.getMonth()+1).padStart(2,'0');
+  dateDay.innerText = `Day ${day+1} — ${dd}/${mm}`;
+  puzzleText.innerText = todayLetter.puzzle;
+  letterDiv.style.display = 'none';
+  heart.style.opacity = 0;
+  heart.style.transform = 'scale(.8)';
+  nextButtonWrap.style.display = 'none';
+  puzzleDiv.style.display = 'block';
+}
+showPuzzle();
+
+/* ------------------------
+   Fireworks (canvas)
+   ------------------------ */
+/* Based on a simple particle fireworks effect.
+   Plays for ~3 seconds then resolves.
+*/
+const canvas = document.getElementById('fireworksCanvas');
+const ctx = canvas.getContext('2d');
+let cw, ch, particles = [], rockets = [], animFrame;
+
+function resizeCanvas(){
+  cw = canvas.width = window.innerWidth;
+  ch = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function random(min,max){ return Math.random()*(max-min)+min; }
+
+class Rocket {
+  constructor(x,y,tx,ty){
+    this.x = x; this.y = y;
+    this.tx = tx; this.ty = ty;
+    this.vx = (tx-x)/30;
+    this.vy = (ty-y)/30 - random(1.5,2.5);
+    this.life = 0;
+    this.exploded = false;
+    this.color = `hsl(${Math.floor(random(0,360))},90%,60%)`;
+  }
+  update(){
+    this.vy += 0.06; // gravity
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life++;
+    if(this.vy > 1 || this.life > 40) {
+      this.explode();
+    }
+  }
+  explode(){
+    if(this.exploded) return;
+    this.exploded = true;
+    // spawn particles
+    const count = Math.floor(random(25,50));
+    for(let i=0;i<count;i++){
+      particles.push(new Particle(this.x, this.y, this.color));
+    }
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+  }
+}
+
+class Particle {
+  constructor(x,y, color){
+    this.x = x; this.y = y;
+    const speed = random(1.5,6);
+    const angle = random(0, Math.PI*2);
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed;
+    this.life = 0;
+    this.ttl = Math.floor(random(40,80));
+    this.color = color;
+    this.alpha = 1;
+  }
+  update(){
+    this.vy += 0.02;
+    this.vx *= 0.995;
+    this.vy *= 0.995;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life++;
+    this.alpha = 1 - (this.life/this.ttl);
+    if(this.alpha <= 0) this.alpha = 0;
+  }
+  draw(){
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.alpha;
+    ctx.arc(this.x, this.y, 2.6, 0, Math.PI*2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+  }
+}
+
+function launchFireworks(durationMs = 3000){
+  canvas.style.display = 'block';
+  particles = []; rockets = [];
+  let start = Date.now();
+
+  // spawn rockets periodically
+  const spawn = setInterval(()=>{
+    const sx = random(cw*0.1, cw*0.9);
+    const sy = ch + 10;
+    const tx = random(cw*0.2, cw*0.8);
+    const ty = random(ch*0.15, ch*0.45);
+    rockets.push(new Rocket(sx, sy, tx, ty));
+  }, 180);
+
+  function loop(){
+    ctx.clearRect(0,0,cw,ch);
+    // draw semi-transparent dark overlay for glow
+    ctx.fillStyle = 'rgba(8,6,6,0.06)';
+    ctx.fillRect(0,0,cw,ch);
+
+    for(let i=rockets.length-1;i>=0;i--){
+      rockets[i].update();
+      rockets[i].draw();
+      if(rockets[i].exploded) rockets.splice(i,1);
+    }
+    for(let i=particles.length-1;i>=0;i--){
+      particles[i].update();
+      particles[i].draw();
+      if(particles[i].alpha <= 0) particles.splice(i,1);
+    }
+    // stop condition
+    if(Date.now() - start > durationMs){
+      clearInterval(spawn);
+      // continue a bit until particles vanish
+      if(particles.length === 0 && rockets.length === 0){
+        cancelAnimationFrame(animFrame);
+        canvas.style.display = 'none';
+        resolveFireworks(); // show letter after
+        return;
+      }
+    }
+    animFrame = requestAnimationFrame(loop);
+  }
+  loop();
+
+  // Return a promise-like flow using a global setter
+  let resolved = false;
+  function resolveFireworks(){
+    if(resolved) return;
+    resolved = true;
+    // after finished, fade-in letter (handled elsewhere)
+    showLetterAfterFireworks();
+  }
+}
+
+/* ------------------------
+   Show letter after fireworks
+   ------------------------ */
+function showLetterAfterFireworks(){
+  // show heart quickly
+  heart.style.opacity = 1;
+  heart.style.transform = 'scale(1)';
+
+  // show letter with fade
+  const todayLetter = letters[day];
+  letterDiv.innerText = todayLetter.text;
+  letterDiv.style.opacity = 0;
+  letterDiv.style.display = 'block';
+  letterDiv.style.transition = 'opacity .6s ease, transform .6s ease';
+  letterDiv.style.transform = 'translateY(6px)';
+  setTimeout(()=>{
+    letterDiv.style.opacity = 1;
+    letterDiv.style.transform = 'translateY(0)';
+  },150);
+
+  // show next button after a little delay
+  setTimeout(()=>{
+    nextButtonWrap.style.display = 'block';
+  },700);
+}
+
+/* ------------------------
+   Answer check & wiring
+   ------------------------ */
+const submitBtn = document.getElementById('submitBtn');
+submitBtn.addEventListener('click', tryAnswer);
+document.getElementById('answerInput').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') tryAnswer();
+});
+
+function tryAnswer(){
+  const todayLetter = letters[day];
+  const userAnswer = document.getElementById('answerInput').value.trim();
+  if(!userAnswer){
+    // gentle nudge
+    alert("Type your answer, Baccha ❤️");
+    return;
+  }
+  if(userAnswer.toLowerCase() === todayLetter.answer.toLowerCase()){
+    // correct: launch fireworks, then letter
+    puzzleDiv.style.display = 'none';
+    // small delay then play fireworks
+    setTimeout(()=>{ launchFireworks(3000); }, 150);
+  } else {
+    // incorrect
+    alert("Try again, Baccha ❤️");
+  }
+}
+
+/* ------------------------
+   Next button -> modal
+   ------------------------ */
+nextButton.addEventListener('click', function(){
+  modal.style.display = 'block';
+});
+closeModal.addEventListener('click', function(){
+  modal.style.display = 'none';
+});
+
+/* --------------
+   Accessibility: if day is last, change text
+   -------------- */
+if(day === letters.length - 1){
+  // last day
+  // when last letter revealed, change next button text
+  nextButton.addEventListener('click', function(){
+    modal.querySelector('p').innerText = "This was the last letter — I love you forever 💖";
+    modal.style.display = 'block';
+  });
+}
+
+/* ------------------------
+   Small polish: initial focus
+   ------------------------ */
+document.getElementById('answerInput').focus();
+
+</script>
+</body>
+</html>
