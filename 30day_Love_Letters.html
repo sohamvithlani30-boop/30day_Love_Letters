@@ -1,521 +1,654 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>30-Day Warm Hug Journey</title>
+<title>30-Day Love Letter Journey — For My Pretty Little Baby</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f9efe6;
-    --card:#fff7f2;
-    --accent:#ff6b81;
-    --text:#5a4634;
-    --muted:#b79a87;
+    --bg:#fff6fb;
+    --card:#fff;
+    --accent:#f7a8b8; /* cute pink */
+    --gold:#c7a15a;
+    --text:#3a2b2b;
+    --muted:#8c6f6f;
+    --button:#f3c0d0;
+    --shadow: 0 10px 30px rgba(58,43,43,0.08);
   }
-  html,body{
-    height:100%;
-    margin:0;
-    font-family: 'Segoe Script', cursive;
-    background: linear-gradient(180deg,#fff7f2 0%, #f3e9d7 100%);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-  }
-
-  #wrap{
+  html,body{height:100%;margin:0;font-family: "Playfair Display", serif;background: linear-gradient(180deg, #fff6fb 0%, #fffaf0 100%);}
+  .wrap{
     min-height:100%;
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:30px;
+    padding:40px;
   }
-
-  #container{
-    width:92%;
-    max-width:540px;
+  .card{
+    width:980px;
+    max-width:96vw;
     background:var(--card);
-    border-radius:22px;
-    padding:28px;
-    box-shadow: 0 12px 30px rgba(90,70,52,0.08);
-    text-align:center;
-    position:relative;
-    overflow:hidden;
-  }
-
-  h1{
-    margin:0 0 10px 0;
-    color:var(--text);
-    font-size:26px;
-  }
-
-  #dateDay{ color:var(--muted); margin-bottom:14px; font-size:14px; }
-
-  #puzzleDiv p{
-    font-size:18px;
-    color:var(--text);
-    margin:8px 0 12px 0;
-  }
-
-  input#answerInput{
-    width:68%;
-    padding:10px 12px;
-    border-radius:10px;
-    border:1px solid #e6d2c6;
-    font-size:16px;
-    outline:none;
-    box-sizing:border-box;
-  }
-
-  button.action{
-    padding:10px 18px;
-    font-size:16px;
-    border-radius:12px;
-    border:none;
-    background:var(--accent);
-    color:white;
-    cursor:pointer;
-    margin-left:10px;
-    box-shadow: 0 6px 14px rgba(255,107,129,0.18);
-    transition: transform .12s ease;
-  }
-  button.action:active{ transform: translateY(2px); }
-
-  #heart{
-    font-size:56px;
-    color:#ff4f9a;
-    opacity:0;
-    transform:scale(.8);
-    transition: opacity .6s ease, transform .6s ease;
-    margin-top:12px;
-  }
-
-  #letter{
-    display:none;
-    text-align:left;
-    margin-top:18px;
-    color:var(--text);
-    font-size:17px;
-    white-space:pre-line;
-    line-height:1.45;
-    border-radius:12px;
-    padding:12px;
-    background: linear-gradient(180deg, rgba(255,245,247,0.7) 0%, rgba(255,250,249,0.5) 100%);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
-  }
-
-  /* Next button (cute) */
-  #nextButtonWrap{
-    display:none;
-    margin-top:16px;
-    text-align:center;
-  }
-  #nextButton{
-    padding:12px 22px;
     border-radius:18px;
-    border:none;
-    background:linear-gradient(90deg,#ff89a9,#ff6b81);
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    box-shadow: 0 10px 22px rgba(255,107,129,0.18);
-    font-family: 'Segoe Script', cursive;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns: 380px 1fr;
   }
-
-  /* Modal tiny for "see you tomorrow" */
-  #modal{
-    position:fixed;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%) scale(.9);
-    background:var(--card);
-    padding:20px 18px;
-    border-radius:14px;
-    box-shadow:0 18px 40px rgba(90,70,52,0.15);
-    display:none;
-    text-align:center;
-    z-index:1200;
+  .left{
+    padding:36px;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(247,168,184,0.12), transparent 10%),
+      linear-gradient(180deg, rgba(199,161,90,0.06), transparent);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:flex-start;
+    justify-content:center;
   }
-  #modal p{ margin:0 0 10px 0; color:var(--text); font-size:16px; }
-  #modal button{ padding:8px 14px; border-radius:10px; border:none; background:var(--accent); color:white; cursor:pointer;}
-
-  /* Fireworks canvas overlay */
-  #fireworksCanvas{
-    position:fixed;
-    left:0;
-    top:0;
+  .logo{
+    font-family: "Dancing Script", cursive;
+    font-size:34px;
+    color:var(--accent);
+    letter-spacing:1px;
+  }
+  .title{
+    font-size:28px;
+    color:var(--text);
+    font-weight:700;
+    margin-top:6px;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:6px;
+  }
+  .decor{
     width:100%;
-    height:100%;
-    pointer-events:none;
-    z-index:1000;
-    display:none;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin:12px 0;
+  }
+  .preview{
+    width:100%;
+    height:220px;
+    border-radius:12px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="%23fff6fb"/><stop offset="1" stop-color="%23ffeef6"/></linearGradient></defs><rect width="100%" height="100%" rx="12" fill="url(%23g)"/><g transform="translate(18,18)"><text x="0" y="32" font-family="Dancing Script, cursive" font-size="32" fill="%23f7a8b8">A Journey For My Pretty Little Baby</text></g></svg>') center/cover no-repeat;
+    box-shadow: 0 6px 20px rgba(199,161,90,0.08);
   }
 
-  /* small responsive tweaks */
-  @media (max-width:420px){
-    #container{ padding:18px; border-radius:18px; }
-    input#answerInput{ width:58%; }
-    h1{ font-size:22px; }
+  .right{
+    padding:28px;
+    position:relative;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(199,161,90,0.02), transparent 10%),
+      linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,250,250,0.95));
+  }
+  .controls{
+    display:flex;gap:12px;align-items:center;margin-bottom:10px;
+  }
+  .day-pill{
+    background:linear-gradient(90deg, #fff, #fff3f7);
+    border:1px solid rgba(199,161,90,0.18);
+    padding:8px 14px;border-radius:999px;font-weight:700;color:var(--gold);
+    box-shadow: 0 4px 10px rgba(247,168,184,0.06);
+  }
+  .status{
+    margin-left:auto;color:var(--muted);font-size:14px;
+  }
+
+  .frame{
+    border:3px dashed rgba(199,161,90,0.12);
+    padding:22px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff9fb);
+    min-height:400px; display:flex;flex-direction:column;
+    gap:12px;
+    position: relative;
+  }
+  .locked {
+    display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;
+    text-align:center;padding:12px;
+  }
+  .locked h2{margin:8px 0;color:var(--text);font-size:20px}
+  .locked p{color:var(--muted);margin:6px 0}
+  .choices{display:flex;flex-direction:column;gap:8px;width:100%;max-width:420px;margin-top:12px}
+  .choice{
+    padding:12px 14px;border-radius:10px;border:1px solid rgba(58,43,43,0.06);
+    background:linear-gradient(90deg,#fff,#fffaf2);cursor:pointer;font-weight:600;color:var(--text);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .choice:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(247,168,184,0.08)}
+  .reveal{
+    display:none;
+    flex-direction:column;gap:12px;height:100%;
+  }
+  .letter-title{font-family:"Dancing Script",cursive;font-size:28px;color:var(--accent); margin-bottom: 5px;}
+  .letter-body{
+    color:var(--text);
+    line-height:1.7;
+    font-size:16px;
+    max-height:380px; 
+    overflow-y:auto;
+    padding-right: 10px;
+    white-space: pre-line; 
+  }
+  .letter-body::-webkit-scrollbar {width: 6px;}
+  .letter-body::-webkit-scrollbar-track {background: #fff0f5;}
+  .letter-body::-webkit-scrollbar-thumb {background: var(--button); border-radius: 10px;}
+
+  .action-row{display:flex;gap:12px;align-items:center;margin-top:auto; padding-top:15px; border-top: 1px solid rgba(0,0,0,0.05);}
+  .small-muted{color:var(--muted);font-size:13px}
+  .countdown{font-weight:700;color:var(--gold);font-size:16px;background:rgba(199,161,90,0.06);padding:6px 10px;border-radius:8px}
+  
+  /* TOAST */
+  #toastBox {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(58,43,43,0.95);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    width: max-content;
+    max-width: 90%;
+    z-index: 100;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .toast-visible { opacity: 1 !important; }
+
+  #fireworks{position:absolute;inset:0;pointer-events:none;z-index:50}
+
+  @media (max-width:880px){
+    .card{grid-template-columns:1fr; padding:18px}
+    .left{order:2}
+    .right{order:1}
   }
 </style>
 </head>
 <body>
-  <canvas id="fireworksCanvas"></canvas>
+<div class="wrap">
+  <div class="card" role="application" aria-label="30 day love letter journey app">
+    <canvas id="fireworks"></canvas>
 
-  <div id="wrap">
-    <div id="container">
-      <h1>Good Morning, Baccha 🌸</h1>
-      <div id="dateDay"></div>
+    <div class="left" aria-hidden="true">
+      <div class="logo">For My Pretty Little Baby</div>
+      <div class="title">30-Day Love Letter Journey</div>
+      <div class="subtitle">Each morning a new puzzle → answer to open. Fireworks when you win. Letters at 7:00 AM.</div>
+      <div class="decor"></div>
+      <div class="preview" title="Preview of the daily letter feel"></div>
+      <div style="margin-top:12px;color:var(--muted);font-size:13px">
+        Tip: A new letter unlocks every morning. Solve the puzzle to read my heart.
+      </div>
+    </div>
 
-      <div id="puzzleDiv">
-        <p id="puzzleText"></p>
-        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:6px;">
-          <input id="answerInput" autocomplete="off" placeholder="Type your answer" />
-          <button class="action" id="submitBtn">Submit</button>
+    <div class="right">
+      <div class="controls">
+        <div class="day-pill" id="currentDayPill">Day 0</div>
+        <div class="status" id="statusText">Loading...</div>
+      </div>
+
+      <div class="frame">
+        <div id="toastBox">Nice try, baby!</div>
+
+        <div id="lockedView" class="locked">
+          <h2 id="lockedTitle">A new letter is waiting</h2>
+          <p id="lockedSubtitle">Answer the puzzle to open today’s letter. Good luck, my Pretty Lil Baby ❤️</p>
+
+          <div style="margin-top:8px" class="small-muted">Question</div>
+          <div id="questionText" style="font-weight:700;color:var(--text)"></div>
+
+          <div class="choices" id="choicesArea" role="list"></div>
+
+          <div style="margin-top:16px" class="small-muted">Tip: If the question is tricky, think of our memories & little moments.</div>
+        </div>
+
+        <div id="revealView" class="reveal">
+          <div class="letter-title" id="letterTitle">Letter</div>
+          <div class="letter-body" id="letterBody">Letter contents will appear here.</div>
+
+          <div class="action-row">
+            <div style="width:100%; text-align:center;" class="small-muted">Next unlock in <span class="countdown" id="nextCountdown">--:--:--</span></div>
+          </div>
         </div>
       </div>
 
-      <div id="heart">❤️</div>
-
-      <div id="letter"></div>
-
-      <div id="nextButtonWrap">
-        <button id="nextButton">Next Letter Tomorrow 💕</button>
-      </div>
     </div>
   </div>
-
-  <div id="modal">
-    <p>See you tomorrow, my Mithudiii 💖</p>
-    <button id="closeModal">OK</button>
-  </div>
+</div>
 
 <script>
-/* ------------------------
-   30 letters array (full)
-   ------------------------ */
+/* ============================
+   CONFIG
+   ============================ */
+const START_DATE_OVERRIDE = null; 
+const UNLOCK_HOUR = 7;
+const UNLOCK_MINUTE = 0;
+const TOTAL_DAYS = 30;
+
+/* ============
+   FUNNY WRONG ANSWER MESSAGES
+   ============ */
+const teasingMessages = [
+  "I know you did that on purpose! 😂",
+  "Nice try, baby, but nope! 😉",
+  "Are you testing me? 👽",
+  "Wrong answer, but I still love you.",
+  "Focus, my pretty little baby!",
+  "Nope! But you look cute trying.",
+  "You can't fool me! Try again.",
+  "0730 is watching you pick the wrong one...",
+  "Stop teasing the code! 😂"
+];
+
+/* ============
+   DATA: The 30 Love Letters
+   ============ */
 const letters = [
-{puzzle:"What feels like home but isn’t a place?", answer:"You", text:`My Baccha,\n\nI don’t know how the world will look today, but I know the first thing my heart wanted was to hug you in words.\n\nA soft, cozy, dreamy kind of hug… the one where your head rests on my chest, my arms wrap around you like a blanket, and silence feels like music.\n\nYou’re my peace, my little universe, my Chota Don, the cutest chaos I ever fell for.\n\n— Your Alien`},
+  {title:"Day 1 — The Beginning", body:"My Pretty Little Baby,\n\nWelcome to Day 1. I am writing this because sometimes saying 'I love you' out loud isn't enough. I needed to build you a place where my love could live, something you can wake up to every single morning and feel held by.\n\nThis journey is 30 days long, but my love for you stretches far beyond time. I look at you and I see art. I see a beauty that doesn't just sit on the surface but radiates from your soul. You have changed the colors of my world, turning grey into gold.\n\nI know I haven't always been perfect. But this—us—is the most important thing in the universe to me. Every puzzle you solve to open these letters is a small symbol of us figuring things out, one step at a time. I hope these words make you smile today, because your smile is the most gorgeous thing I have ever seen.\n\nWith all my love, now and forever,\nSoham"},
+  
+  {title:"Day 2 — That First Morning", body:"My Softest Soul,\n\nDo you remember the first morning we really spent together? I play it in my mind like a favorite movie scene. I remember the way the morning light hit your face, illuminating your skin like you were made of stardust.\n\nThere is a specific kind of peace I feel when I am with you that I have never found anywhere else. It’s not just happiness; it’s safety. It’s the feeling of finally coming home.\n\nI want you to know that every morning since then, I wake up grateful just to know you exist. You are my anchor.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Small word, big effect on my heart?", answer:"Hug", text:`Hey Mithudiii,\n\nA hug can say what words cannot… it’s my way of telling you that you belong to me, in the softest, warmest way.\n\nFeel my heart reach you across the distance.\n\n— Your Alien`},
+  {title:"Day 3 — The Small Things", body:"My Little Warmth,\n\nPeople always talk about grand gestures, but for me, it is the small things about you that destroy me in the best way possible. It is the way your eyelashes flutter when you blink. It is the way your hand looks when you hold a cup of coffee.\n\nI love how you get quiet when you are thinking deeply, and I wonder what beautiful worlds are spinning in your mind. You are a gallery of perfect moments.\n\nI want to be the keeper of your small moments. Today, I am just loving you for the little things.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Emoji hint: 🪐❤️✨ = ?", answer:"You", text:`My Chota Don,\n\nYou are my universe, my little sparkle, my everything. Each time I see you smile, it’s like stars are shining just for us.\n\n— Your Alien`},
+  {title:"Day 4 — Your Voice", body:"My Pink Comfort,\n\nYour voice is my favorite sound in the entire universe. If I am having a terrible day, just hearing you say my name fixes 50% of the problem instantly. It soothes parts of my soul I didn't know were hurting.\n\nThere is a melody in the way you speak, a softness that calms my chaotic mind. I wish I could record your laugh and play it on a loop whenever the world gets too loud.\n\nI promise to listen more. Your voice matters more to me than you know.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"My morning coffee is warm, my heart is warmer because…?", answer:"You", text:`Good morning Baccha,\n\nEven my coffee feels shy compared to the warmth your smile gives me. Every sip reminds me of your little laugh and your magical eyes.\n\n— Alien`},
+  {title:"Day 5 — Rainy Days", body:"My Cupcake Heart,\n\nI love rainy days, but only because they make me think of cuddling with you. There is something about the grey sky that makes your warmth shine brighter. You are like a fireplace in a cold room—magnetic and life-saving.\n\nI imagine us in the future, on a rainy Sunday, doing absolutely nothing. Maybe a movie, maybe just talking, maybe silence. Just being near your gorgeous presence is enough for me.\n\nI want to shelter you from the storms of life. You are my sunshine, always.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"A sound that melts my heart?", answer:"Your laugh", text:`Mithudiii,\n\nYour laugh is like tiny stars bursting in my universe. Each time I hear it, I feel closer, cozy, and infinitely happy.\n\n— Your Alien`},
+  {title:"Day 6 — A Promise to Try", body:"My Vanilla Cloud,\n\nI know I have hurt you in the past. Writing this is hard because I have to admit my flaws to the most perfect person I know. But I want to be honest with you because you deserve nothing less than the truth.\n\nI promise to try. I promise to try harder to understand your heart, to be patient with your feelings, to be the man a woman as gorgeous as you deserves.\n\nI am choosing you. Today, tomorrow, and every day after. I am sorry for the times I fell short, and I am determined to stand tall for you now.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Favorite little chaos of mine?", answer:"You", text:`Chota Don,\n\nAmong all chaos in this world, your tiny chaos makes my days lively and my heart peaceful at the same time. \n\n— Alien`},
+  {title:"Day 7 — One Week In", body:"My Cozy Corner,\n\nSeven days. One whole week of letters. It feels like a small milestone, doesn't it? But every day with you feels like a victory.\n\nThey say the number 7 is lucky, but I don't believe in luck anymore. I believe in destiny. I believe that the universe conspired in a million invisible ways to bring our paths together.\n\nI look at you and I see my future staring back at me with beautiful eyes. You are my treasure.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"What’s soft, warm, and always with me?", answer:"Your hug", text:`My Baccha,\n\nNothing beats the softness of your hug in my mind, wrapping me with comfort even when miles apart.\n\n— Alien`},
+  {title:"Day 8 — Comfort", body:"My Happy Place,\n\nI was thinking today about your comfort food. How your eyes light up when you get that specific treat you love. It’s the purest thing in the world to watch you be happy.\n\nI want to be your comfort. I want to be the human equivalent of your favorite food, your favorite blanket, your favorite song. I want to be the place you go to when the world is too sharp and you need somewhere soft to land.\n\nI hope today treats you gently. Go treat yourself to something tasty today—you deserve it, my gorgeous girl.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"A tiny spark that lights up my day?", answer:"Your smile", text:`Hey Mithudiii,\n\nJust one glance of your smile, and my whole day shines brighter than any sun.\n\n— Your Alien`},
+  {title:"Day 9 — 0730", body:"My Sweet Serotonin,\n\n0730. This number isn't just digits to me anymore. It is etched into my skin and my soul. It represents a turning point, a connection that goes beyond logic and reason. It is the code to my heart.\n\nEvery time I see it, I am reminded of us. It is a permanent mark of a permanent feeling. People ask about tattoos and meanings, but some meanings are too deep to explain to strangers.\n\nIt belongs to you. It belongs to us. It is my silent vow that I carry with me everywhere I go.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Emoji hint: ☕❤️🫂 = ?", answer:"Hot chocolate", text:`Baccha,\n\nToday I wish I could hand you a warm cup of chocolate along with my arms around you, soft, cozy, and comforting.\n\n— Your Alien`},
+  {title:"Day 10 — The Smile", body:"My Soft Blossom,\n\nWe are one-third of the way through. Today, I just want to talk about your smile. It is, without exaggeration, the most beautiful thing I have ever seen in my life.\n\nIt reaches your eyes and makes them sparkle in a way that photos can never quite capture. When you smile at me, the rest of the room disappears. I feel like I can do anything, be anything, as long as I am the reason for that smile.\n\nKeep smiling, my love. It lights up my dark world.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Something I think of before sleeping?", answer:"You", text:`Chota Don,\n\nBefore I close my eyes, your little face dances in my mind. My last thought is always your warm hug.\n\n— Alien`},
+  {title:"Day 11 — Learning", body:"My Little Miracle,\n\nI am learning you. Like a complex book, like a beautiful language that no one else speaks. I am learning what makes you tick, what makes you cry, what makes you dream.\n\nI am sorry for the times I misread you. I am a student of your heart, and I am studying every day to be an expert on You.\n\nPlease be patient with me as I learn. I promise I am doing my homework. I want to know you so well that I can anticipate your needs before you even speak them.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Soft words that heal?", answer:"I love you", text:`Baccha,\n\nThree little words, infinite warmth. Say them, hear them, feel them… that’s my entire universe.\n\n— Your Alien`},
+  {title:"Day 12 — Music and Memory", body:"My Warm Hug,\n\nMusic has a way of trapping memories in amber. There are songs I hear now that immediately transport me back to you. They play, and suddenly I can smell your perfume, I can see your face.\n\nWhether it's that song we listened to in the car, or the one I sent you when I missed you—they are the soundtrack of our movie. And it is my favorite movie of all time.\n\nI hope today your life has a beautiful melody. I hope you hear a song that makes you want to dance.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Favorite star in my sky?", answer:"You", text:`Mithudiii,\n\nEven all stars in the sky pale when I think of you. You shine the brightest in my heart.\n\n— Alien`},
+  {title:"Day 13 — The Playlist", body:"My Calm Universe,\n\nIf I could make a playlist of my thoughts about you, it would be chaotic. It would have slow ballads of longing, fast tracks of excitement, and symphonies of gratitude.\n\nYou are every genre of music to me. You are the excitement of pop, the depth of classical, the soul of jazz. You are the only song I want to keep on repeat for the rest of my life.\n\nMaybe we should listen to something together today, even if we are apart.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Tiny flutter in my chest?", answer:"You", text:`Chota Don,\n\nEvery message from you makes my heart skip in tiny flutters. Your existence is my joy.\n\n— Alien`},
+  {title:"Day 14 — Two Weeks", body:"My Sweet Serenity,\n\nTwo weeks. We are getting deeper now. I realized today that I don't just love you; I like you. I like who you are as a person. I like your kindness, your wit, your quiet strength.\n\nEven if we weren't in love, I would want to know you. You are a genuinely good human being, and that is rare in this world. You shine with an inner light that makes everyone else look dim.\n\nI am so proud of you. I am so proud to call you mine.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"What do I carry wherever I go?", answer:"Your love", text:`Baccha,\n\nEven if miles separate us, your love stays in my heart, warm and comforting.\n\n— Alien`},
+  {title:"Day 15 — Halfway There", body:"My Gentle Moonlight,\n\nWe are halfway through this journey. It feels fast, doesn't it? Time is a funny thing. When I am with you, hours feel like seconds. When I am away from you, minutes feel like days.\n\nIt’s relativity, explained by love. You warp time just by being beautiful. My promise to you at this halfway mark is to stop rushing.\n\nI want to slow down and live in the moment with you, memorizing every curve of your face and every beat of your heart.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Softest place in my world?", answer:"Your arms", text:`Mithudiii,\n\nWhen I think of safety and peace, your arms are the first thing I imagine, wrapping me in warmth.\n\n— Your Alien`},
+  {title:"Day 16 — Laughter", body:"My Soft Whisper,\n\nI miss your laugh. The real one. The one that happens when something is actually funny, not just polite. The one that makes your nose crinkle.\n\nRemember that time we laughed until our stomachs hurt? I hold onto that memory like a lifeline. I want a lifetime of those moments. I want to be the clown that makes you lose your breath with joy.\n\nThank you for being my joy.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"My favorite little rebellion?", answer:"Your jokes", text:`Chota Don,\n\nYour silly little jokes make me laugh like no one else, making ordinary days magical.\n\n— Alien`},
+  {title:"Day 17 — Favorite Things", body:"My Pretty Little Peace,\n\nI want to memorize your favorite things so I never have to ask. I want to know your order at every restaurant. I want to know which side of the bed you prefer.\n\nIntimacy isn't just physical; it's knowledge. It's knowing that you hate pickles or love extra spicy food. It's knowing You in a way no one else does.\n\nI am building a library of You in my mind. And it is my most possessive collection.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Magic word that lifts me?", answer:"Love", text:`Baccha,\n\nJust one word — love — and my heart soars with happiness because it’s you giving it to me.\n\n— Your Alien`},
+  {title:"Day 18 — The Sunset", body:"My Safe Haven Girl,\n\nOne day, we will watch the sunset from a place where we don't have to say goodbye afterwards. That is my dream. To watch the sun go down and know that I get to wake up next to you when it comes back up.\n\nNo driving home, no 'see you later.' Just us. Just your gorgeous silhouette against the dying light, and me knowing I am the luckiest man alive.\n\nUntil then, look at the sunset and know I am looking at the same sky, wishing I was holding your hand.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Tiny warmth in winter?", answer:"Your hands", text:`Mithudiii,\n\nEven winter feels cozy when I think of your little hands wrapped in mine.\n\n— Alien`},
+  {title:"Day 19 — Vulnerability", body:"My Soft Glow,\n\nI am trying to be brave for you. To open up my chest and show you the messy parts inside. It is scary to give someone the power to destroy you, but I trust you.\n\nI trust you with my heart, my secrets, my fears. You are the only person I feel safe enough to be weak around. You handle my heart with such gentle hands.\n\nThank you for loving me even when I am difficult.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Emoji hint: 🌙✨❤️ = ?", answer:"You", text:`Chota Don,\n\nWhen night comes, your memories shine like stars in my heart, bright and comforting.\n\n— Alien`},
+  {title:"Day 20 — Stitching Stories", body:"My Honeydrop,\n\nThese 20 letters are like threads in a tapestry. We are weaving a story together, day by day. Some threads are bright and golden (our happy days), some are dark (our fights), but together they make a picture.\n\nAnd the picture is beautiful because it is real. It is Us. I wouldn't trade our story for a perfect fairy tale. I want the real, messy, complicated, passionate story of Us.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Morning melody?", answer:"Your voice", text:`Baccha,\n\nThe softest sound in my world is your little voice, waking my heart gently every morning.\n\n— Alien`},
+  {title:"Day 21 — The Secret Name", body:"My Little Daydream,\n\n'My Pretty Little Baby.' When I call you that, it’s not just a nickname. It’s a vow.\n\nIt’s an endearment that means I want to protect you. I want to spoil you. I want to take care of you. You are strong and independent, I know, but with me, you can be soft.\n\nYou can let your guard down. You can be my baby. I’ve got you. I’ve always got you.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Tiny piece of heaven?", answer:"Your smile", text:`Mithudiii,\n\nA glance of your smile feels like a tiny paradise I can carry everywhere.\n\n— Alien`},
+  {title:"Day 22 — A Drawing in Words", body:"My Warm Cup of Love,\n\nIf I could draw, I would sketch your eyes. But I can't, so I paint with words. Your eyes hold a universe. When you look at me, I feel seen.\n\nYou see past the masks I wear for the world. You see the real me, and somehow, you still love me. That is a miracle I will never understand, but I will always accept.\n\nYou are art, walking around in human form. And I am your biggest admirer.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Secret ingredient to happiness?", answer:"You", text:`Chota Don,\n\nAll my joy mixes in thoughts of you — simple, sweet, and infinite.\n\n— Alien`},
+  {title:"Day 23 — Patience", body:"My Pink Star,\n\nI am learning patience. I know I have been rushed in the past. I know I have pushed when I should have pulled back. I am sorry.\n\nI am learning that love is a marathon, not a sprint. I am willing to wait. I am willing to go at your pace. Because you are worth waiting for.\n\nTake your time, my love. I am not going anywhere. I am planted here, like a tree, waiting for you to be ready.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Favorite little adventure?", answer:"Your company", text:`Baccha,\n\nEven a walk in silence with you feels like the greatest adventure.\n\n— Your Alien`},
+  {title:"Day 24 — The Tuck", body:"My Heart’s Comfort,\n\nI notice how you tuck your hair behind your ear sometimes. It’s such a simple movement, but it makes my heart flip. It drives me crazy in the best way.\n\nIt’s unconscious, natural, and utterly beautiful. It’s these candid moments that I fall in love with over and over again. You don't even try, and you are breathtaking.\n\nYou are a work of art in motion. Never change the way you move.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Soft glow in my life?", answer:"Your eyes", text:`Mithudiii,\n\nLooking into your eyes is like sunlight kissing my heart, warm and tender.\n\n— Alien`},
+  {title:"Day 25 — Dreams", body:"My Little Panda Girl,\n\nI dream about you. Not just when I am asleep, but when I am awake. I daydream about grocery shopping with you. About folding laundry with you. About fighting over the remote control.\n\nThe mundane, boring parts of life—I want them all with you. A boring life with you sounds like paradise to me. Just waking up and seeing your messy hair and sleepy eyes would be the greatest gift.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Tiny surprise that excites?", answer:"Your hugs", text:`Chota Don,\n\nEvery unexpected hug from you makes my day instantly brighter.\n\n— Alien`},
+  {title:"Day 26 — The Song Remains", body:"My Softest Dream,\n\nThere is a song playing in my head right now, and it reminds me of the first time I realized I was in deep. It’s a love song, obviously.\n\nAll love songs make sense now. I used to think they were cheesy, but now I hear the lyrics and think, 'Oh, that's exactly how it feels.' You turned me into a romantic cliché, and I love it.\n\nYou are the melody that my heart beats to. You are the rhythm of my life.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Emoji hint: 🥰☕🫂 = ?", answer:"You", text:`Baccha,\n\nYou are the warm cup, the cozy hug, the little smile that completes my day.\n\n— Alien`},
+  {title:"Day 27 — Apology and Growth", body:"My Calmness in Chaos,\n\nI want to apologize again for the times I didn't listen. For the times I made you feel small or unheard. It haunts me.\n\nI am growing. It hurts to grow, but I am doing it. I am shedding my old skin to become the man who can hold your heart properly. I want to be worthy of a woman as magnificent as you.\n\nThank you for believing in my potential, even when I didn't show it.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Soft whisper in my heart?", answer:"I love you", text:`Mithudiii,\n\nEvery whispered 'I love you' from you echoes endlessly in my heart, soft and infinite.\n\n— Alien`},
+  {title:"Day 28 — Penultimate Thoughts", body:"My Smile Maker,\n\nWe are getting close to the end of this 30-day journey. It makes me a little sad, but also excited. Excited because this isn't really the end. It’s just the prologue.\n\nThe real story is what we do after this. The real story is how we build our life. I am ready to build. Brick by brick, kiss by kiss.\n\nI want to build a castle where you are the queen, safe and adored forever.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Tiny heartbeat reminder?", answer:"You", text:`Chota Don,\n\nEven in silence, your thoughts make my heart race gently with joy.\n\n— Alien`},
+  {title:"Day 29 — Almost There", body:"My Tender Heartbeat,\n\nTomorrow is the last letter. But today, I want to give you a warm hug in text form. Imagine my arms around you right now. Imagine me pulling you close and resting my chin on your head.\n\nImagine the world falling away until it’s just us. Feel that warmth? That’s how much I love you. You are the beat in my chest.\n\nCan't wait for the grand finale tomorrow. It is going to be my soul on a page.\n\nWith all my love, now and forever,\nSoham"},
 
-{puzzle:"Favorite comfort in chaos?", answer:"Your presence", text:`Baccha,\n\nNo matter how noisy the world is, your presence calms me completely, like a warm blanket.\n\n— Your Alien`},
+  {title:"Day 30 — The Vow", body:"My Forever Warmth,\n\nWe have arrived at Day 30. If you are reading this, thank you for sticking with me. Thank you for opening every puzzle, for reading every word, for letting me love you in this way.\n\nThis isn't just a letter; it is a vow. A vow written not in stone, but in digital ink, which in some ways is even more permanent because it will live here forever.\n\nI love you. I don't say that lightly. I love the way you are. I love your gorgeous face, your beautiful soul, your dark parts, and your light parts. I love your past, your present, and the future I see in your eyes.\n\nI promise to be your partner. I promise to be your biggest fan. I promise to apologize when I am wrong (and I know I will be). I promise to listen. I promise to work on myself so that I can be worthy of you.\n\nWe have had our ups and downs. We have scarred each other and healed each other. But through it all, the one constant has been this pull—this magnetic, undeniable force that keeps bringing me back to you.\n\nI want to wake up next to you for the rest of my life. I want to handle your bad days. I want to celebrate your wins. I want to be the one holding your hand when we are old and grey.\n\nTake this letter as my heart, stripped bare and placed in your hands. Be gentle with it, keep it safe, because it belongs to you entirely. No matter what happens, no matter where life takes us, you will always be the one. The only one. \n\nI love you, now and forever.\n\nWith all my love, now and forever,\nSoham"}
+];
 
-{puzzle:"Soft magic I carry daily?", answer:"Your love", text:`Mithudiii,\n\nEven unseen, your love flows around me, making each day tender and dreamy.\n\n— Alien`}];
+const puzzles = [
+  {q:"Which number is inked on my skin and etched in my heart?", choices:["0730","0307","0073","3700"], correctIndex:0},
+  {q:"Where is the place I first realized I wanted you?", choices:["The Café","The Park","In my dreams","At school"], correctIndex:0},
+  {q:"What food makes your bad days better?", choices:["Maggi","Pizza","Ice cream","Paratha"], correctIndex:2},
+  {q:"When I am nervous or wrong, what do I say too often?", choices:["I know","Sorry","Maybe","Quiet"], correctIndex:1},
+  {q:"What is my absolute favorite sound?", choices:["Rain","Music","Your Voice","Silence"], correctIndex:2},
+  {q:"Which time of day makes me miss you the most?", choices:["Morning","Noon","Sunset","Midnight"], correctIndex:0},
+  {q:"If I could take you anywhere, where would we go first?", choices:["A crowded club","A quiet beach","A movie","A mall"], correctIndex:1},
+  {q:"What is the nickname that is only for you?", choices:["My Pretty Lil Baby","Honey","Dear","Princess"], correctIndex:0},
+  {q:"What do I promise to do more of?", choices:["Talk","Sleep","Listen","Work"], correctIndex:2},
+  {q:"What color reminds me of your sweetness?", choices:["Pastel pink","Neon green","Black","Grey"], correctIndex:0},
+  {q:"What is the little habit of yours I adore?", choices:["Tucking hair back","Biting nails","Tapping foot","Frowning"], correctIndex:0},
+  {q:"Which song genre describes my feelings?", choices:["Heavy Metal","Love Songs","Rap","Techno"], correctIndex:1},
+  {q:"What do I wish to give you most in this world?", choices:["Expensive gifts","Peace & Love","Drama","Distance"], correctIndex:1},
+  {q:"What do I see when I look at you?", choices:["My Future","A Friend","A Stranger","Nothing"], correctIndex:0},
+  {q:"How would I describe our story?", choices:["Perfect","Messy but Beautiful","Boring","Short"], correctIndex:1},
+  {q:"What is my goal for us?", choices:["To give up","To grow old together","To be just friends","To forget"], correctIndex:1},
+  {q:"What makes me brave?", choices:["Your belief in me","Money","Coffee","Anger"], correctIndex:0},
+  {q:"What do I want to be for you?", choices:["Your boss","Your safety","Your burden","Your past"], correctIndex:1},
+  {q:"If we are fighting, what do I really want?", choices:["To win","To fix it","To leave","To yell"], correctIndex:1},
+  {q:"What is the theme of Day 9?", choices:["The Tattoo","The Food","The Weather","The Car"], correctIndex:0},
+  {q:"What makes your eyes sparkle?", choices:["Tears","Your Smile","Dust","Anger"], correctIndex:1},
+  {q:"What am I learning to practice?", choices:["Patience","Running","Cooking","Singing"], correctIndex:0},
+  {q:"Where do I want to watch the sun go down?", choices:["With you","Alone","On TV","Online"], correctIndex:0},
+  {q:"How often do you cross my mind?", choices:["Every second","Rarely","Once a day","Never"], correctIndex:0},
+  {q:"What kind of life do I dream of with you?", choices:["Flashy","Quiet & Happy","Busy","Apart"], correctIndex:1},
+  {q:"What is the thread that connects these letters?", choices:["Love","Paper","Ink","WiFi"], correctIndex:0},
+  {q:"What do I regret?", choices:["Meeting you","Not listening enough","Loving you","Nothing"], correctIndex:1},
+  {q:"How many days is this journey?", choices:["30 Days","10 Days","100 Days","1 Day"], correctIndex:0},
+  {q:"What comes after Day 30?", choices:["The End","Our Real Beginning","Goodbye","Silence"], correctIndex:1},
+  {q:"What is the final promise?", choices:["I am yours forever","I might stay","I'll think about it","See you later"], correctIndex:0}
+];
 
-/* ------------------------
-   Day calculation (7AM based)
-   ------------------------ */
-let startDate = new Date();
-startDate.setHours(7,0,0,0);
-let today = new Date();
-let day = Math.floor((today - startDate)/(1000*60*60*24));
-if(day < 0) day = 0;
-if(day > letters.length - 1) day = letters.length - 1;
-
-/* ------------------------
-   DOM refs & initial display
-   ------------------------ */
-const puzzleText = document.getElementById('puzzleText');
-const puzzleDiv = document.getElementById('puzzleDiv');
-const letterDiv = document.getElementById('letter');
-const heart = document.getElementById('heart');
-const dateDay = document.getElementById('dateDay');
-const nextButtonWrap = document.getElementById('nextButtonWrap');
-const nextButton = document.getElementById('nextButton');
-const modal = document.getElementById('modal');
-const closeModal = document.getElementById('closeModal');
-
-function showPuzzle(){
-  const todayLetter = letters[day];
-  const date = new Date(startDate.getTime() + day * 24*60*60*1000);
-  const dd = String(date.getDate()).padStart(2,'0');
-  const mm = String(date.getMonth()+1).padStart(2,'0');
-  dateDay.innerText = `Day ${day+1} — ${dd}/${mm}`;
-  puzzleText.innerText = todayLetter.puzzle;
-  letterDiv.style.display = 'none';
-  heart.style.opacity = 0;
-  heart.style.transform = 'scale(.8)';
-  nextButtonWrap.style.display = 'none';
-  puzzleDiv.style.display = 'block';
+// Sanity check - ensure lengths
+if (letters.length !== TOTAL_DAYS || puzzles.length !== TOTAL_DAYS) {
+  console.warn('letters/puzzles length mismatch with TOTAL_DAYS. Edit arrays to match TOTAL_DAYS.');
 }
-showPuzzle();
 
-/* ------------------------
-   Fireworks (canvas)
-   ------------------------ */
-/* Based on a simple particle fireworks effect.
-   Plays for ~3 seconds then resolves.
+/* ============================
+   APP STATE & UTIL
+   ============================ */
+
+/*
+   IMPORTANT: I changed the key to 'love_journey_v8_final'.
+   This resets the save data so you see the questions again.
 */
-const canvas = document.getElementById('fireworksCanvas');
+const stateKey = 'love_journey_v8_final';
+let progress = JSON.parse(localStorage.getItem(stateKey) || '{}'); 
+if (!progress.answeredDays) progress.answeredDays = {};
+
+/* 
+   BUG FIX: Persistent Start Date
+   If we rely on "new Date()" every time, "Tomorrow" is always a day away.
+   We must store the initial start date in localStorage so the timeline is fixed.
+*/
+if (!progress.startDate) {
+  // If we have an override in code, use it.
+  if (START_DATE_OVERRIDE) {
+    progress.startDate = START_DATE_OVERRIDE; // 'YYYY-MM-DD' string
+  } else {
+    // START YESTERDAY. This ensures Day 2 is unlocked today.
+    const now = new Date();
+    const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, UNLOCK_HOUR, UNLOCK_MINUTE, 0, 0);
+    // Store as ISO string
+    progress.startDate = yesterday.toISOString();
+  }
+  localStorage.setItem(stateKey, JSON.stringify(progress));
+}
+
+function saveProgress(){ localStorage.setItem(stateKey, JSON.stringify(progress)); }
+
+function formatTime(n){ return (n<10?'0':'') + n; }
+
+// Parse the stored start date
+function getStartDate(){
+  // progress.startDate is a string (ISO or YYYY-MM-DD)
+  const s = progress.startDate;
+  // if it's simple YYYY-MM-DD
+  if (s.length === 10 && s.indexOf('T') === -1) {
+    const parts = s.split('-');
+    const y = +parts[0], m = +parts[1]-1, d = +parts[2];
+    return new Date(y,m,d,UNLOCK_HOUR,UNLOCK_MINUTE,0,0);
+  }
+  // else it is ISO string
+  return new Date(s);
+}
+
+const START_DATE = getStartDate();
+
+/* Return the unlock DateTime for dayIndex (0-based) */
+function unlockDateForDay(dayIndex){
+  const d = new Date(START_DATE);
+  d.setDate(d.getDate() + dayIndex);
+  // Ensure hour/min are correct (in case of DST shifts, though simple math is usually enough)
+  d.setHours(UNLOCK_HOUR, UNLOCK_MINUTE, 0, 0);
+  return d;
+}
+
+/* calculate current unlocked day index */
+function currentAvailableDayIndex(){
+  const now = new Date();
+  for (let i = TOTAL_DAYS-1; i>=0; i--){
+    if (now >= unlockDateForDay(i)) return i;
+  }
+  return -1; // none yet
+}
+
+/* ============================
+   UI BINDINGS & Logic
+   ============================ */
+const currentDayPill = document.getElementById('currentDayPill');
+const statusText = document.getElementById('statusText');
+const lockedView = document.getElementById('lockedView');
+const revealView = document.getElementById('revealView');
+const questionText = document.getElementById('questionText');
+const choicesArea = document.getElementById('choicesArea');
+const lockedTitle = document.getElementById('lockedTitle');
+const lockedSubtitle = document.getElementById('lockedSubtitle');
+const letterTitle = document.getElementById('letterTitle');
+const letterBody = document.getElementById('letterBody');
+const nextCountdown = document.getElementById('nextCountdown');
+const toastBox = document.getElementById('toastBox');
+
+let selectedDayIndex = 0;
+
+function render(){
+  const now = new Date();
+  const availableIndex = currentAvailableDayIndex();
+  
+  // Force Day 0 selection if available
+  if (availableIndex === -1) {
+    selectedDayIndex = 0;
+  } else {
+    // Show the highest available day
+    selectedDayIndex = Math.min(availableIndex, TOTAL_DAYS-1);
+  }
+
+  currentDayPill.textContent = 'Day ' + (selectedDayIndex+1);
+  const unlockDT = unlockDateForDay(selectedDayIndex);
+
+  const isTimeUnlocked = now >= unlockDT;
+  const isAnswered = !!progress.answeredDays[selectedDayIndex];
+
+  if (!isTimeUnlocked) {
+    // Future date
+    lockedTitle.textContent = 'Locked until ' + unlockDT.toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+    lockedSubtitle.textContent = 'Patience, my love. A new letter unlocks at 7:00 AM.';
+    statusText.textContent = 'Wait for it...';
+    showLockedView(selectedDayIndex, true); 
+  } else {
+    // Time is passed. Is it answered?
+    if (isAnswered) {
+      showRevealView(selectedDayIndex);
+      statusText.textContent = 'Opened — ' + (selectedDayIndex+1) + '/' + TOTAL_DAYS;
+    } else {
+      // Unlocked but not answered -> Show Puzzle
+      lockedTitle.textContent = 'A new letter is waiting';
+      lockedSubtitle.textContent = 'Answer the puzzle to open today’s letter. Good luck, my Pretty Lil Baby ❤️';
+      statusText.textContent = 'Available — answer to open';
+      showLockedView(selectedDayIndex, false); 
+    }
+  }
+
+  updateCountdown();
+}
+
+function showLockedView(dayIndex, isTimeLocked){
+  revealView.style.display = 'none';
+  lockedView.style.display = 'flex';
+  
+  if (isTimeLocked) {
+    questionText.style.display = 'none';
+    choicesArea.style.display = 'none';
+    lockedView.querySelectorAll('.small-muted')[0].style.display = 'none';
+    lockedView.querySelectorAll('.small-muted')[1].style.display = 'none';
+  } else {
+    questionText.style.display = 'block';
+    choicesArea.style.display = 'flex';
+    lockedView.querySelectorAll('.small-muted')[0].style.display = 'block';
+    lockedView.querySelectorAll('.small-muted')[1].style.display = 'block';
+    
+    const p = puzzles[dayIndex];
+    questionText.textContent = p.q;
+    // render choices
+    choicesArea.innerHTML = '';
+    p.choices.forEach((c, idx)=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.setAttribute('role','listitem');
+      btn.textContent = c;
+      btn.onclick = ()=> attemptAnswer(dayIndex, idx, btn);
+      choicesArea.appendChild(btn);
+    });
+  }
+}
+
+function showRevealView(dayIndex){
+  lockedView.style.display = 'none';
+  revealView.style.display = 'flex';
+  const L = letters[dayIndex];
+  letterTitle.textContent = L.title;
+  letterBody.textContent = L.body;
+  updateCountdown();
+}
+
+function attemptAnswer(dayIndex, choiceIndex, btnEl){
+  const p = puzzles[dayIndex];
+  if (choiceIndex === p.correctIndex){
+    // correct!
+    progress.answeredDays[dayIndex] = true;
+    saveProgress();
+    launchFireworks(); 
+    setTimeout(()=>{
+      showRevealView(dayIndex);
+    }, 800);
+  } else {
+    // wrong - shake
+    btnEl.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}], {duration:360});
+    btnEl.style.background = 'linear-gradient(90deg,#fff,#ffdfe9)';
+    setTimeout(()=> btnEl.style.background = '', 600);
+    
+    // Show funny toast
+    const msg = teasingMessages[Math.floor(Math.random() * teasingMessages.length)];
+    showToast(msg);
+  }
+}
+
+function showToast(msg){
+  toastBox.textContent = msg;
+  toastBox.classList.add('toast-visible');
+  setTimeout(()=>{
+    toastBox.classList.remove('toast-visible');
+  }, 2500);
+}
+
+function updateCountdown(){
+  const now = new Date();
+  const available = currentAvailableDayIndex();
+  let nextIndex = available + 1;
+  
+  // If we are currently waiting for Day 0 to unlock
+  if (available === -1) nextIndex = 0;
+
+  if (nextIndex >= TOTAL_DAYS) {
+    nextCountdown.textContent = 'Completed';
+    return;
+  }
+  
+  const nextUnlock = unlockDateForDay(nextIndex);
+  const diffMs = Math.max(0, nextUnlock - now);
+  
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const hrs = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
+  
+  if (days > 0) {
+      nextCountdown.textContent = days + "d " + formatTime(hrs) + ':' + formatTime(mins);
+  } else {
+      nextCountdown.textContent = formatTime(hrs) + ':' + formatTime(mins) + ':' + formatTime(secs);
+  }
+}
+
+setInterval(()=>{
+  render();
+}, 1000);
+
+/* ============================
+   Fireworks
+   ============================ */
+const canvas = document.getElementById('fireworks');
 const ctx = canvas.getContext('2d');
-let cw, ch, particles = [], rockets = [], animFrame;
+let W=0,H=0, particles=[];
 
 function resizeCanvas(){
-  cw = canvas.width = window.innerWidth;
-  ch = canvas.height = window.innerHeight;
+  W = canvas.width = canvas.clientWidth;
+  H = canvas.height = canvas.clientHeight;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-function random(min,max){ return Math.random()*(max-min)+min; }
+function rand(min,max){ return Math.random()*(max-min)+min; }
 
-class Rocket {
-  constructor(x,y,tx,ty){
-    this.x = x; this.y = y;
-    this.tx = tx; this.ty = ty;
-    this.vx = (tx-x)/30;
-    this.vy = (ty-y)/30 - random(1.5,2.5);
-    this.life = 0;
-    this.exploded = false;
-    this.color = `hsl(${Math.floor(random(0,360))},90%,60%)`;
+function launchFireworks(){
+  for (let burst=0; burst<8; burst++){
+    const cx = rand(W*0.2, W*0.8);
+    const cy = rand(H*0.2, H*0.6);
+    createBurst(cx,cy);
   }
-  update(){
-    this.vy += 0.06; // gravity
-    this.x += this.vx;
-    this.y += this.vy;
-    this.life++;
-    if(this.vy > 1 || this.life > 40) {
-      this.explode();
-    }
-  }
-  explode(){
-    if(this.exploded) return;
-    this.exploded = true;
-    // spawn particles
-    const count = Math.floor(random(25,50));
-    for(let i=0;i<count;i++){
-      particles.push(new Particle(this.x, this.y, this.color));
-    }
-  }
-  draw(){
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
-    ctx.fillStyle = '#fff';
-    ctx.fill();
+  if (!animRunning) startAnim();
+}
+
+function createBurst(cx,cy){
+  const colors = ['#FF6B6B','#FFD166','#6BCB77','#4D96FF','#C77DF3','#F7A8B8'];
+  const count = 35;
+  for (let i=0;i<count;i++){
+    const angle = Math.PI*2*(i/count) + rand(-0.2,0.2);
+    const speed = rand(3,9);
+    particles.push({
+      x:cx, y:cy,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+      life: rand(80,140),
+      age:0,
+      size: rand(2,5),
+      color: colors[Math.floor(rand(0,colors.length))]
+    });
   }
 }
 
-class Particle {
-  constructor(x,y, color){
-    this.x = x; this.y = y;
-    const speed = random(1.5,6);
-    const angle = random(0, Math.PI*2);
-    this.vx = Math.cos(angle) * speed;
-    this.vy = Math.sin(angle) * speed;
-    this.life = 0;
-    this.ttl = Math.floor(random(40,80));
-    this.color = color;
-    this.alpha = 1;
-  }
-  update(){
-    this.vy += 0.02;
-    this.vx *= 0.995;
-    this.vy *= 0.995;
-    this.x += this.vx;
-    this.y += this.vy;
-    this.life++;
-    this.alpha = 1 - (this.life/this.ttl);
-    if(this.alpha <= 0) this.alpha = 0;
-  }
-  draw(){
-    ctx.globalCompositeOperation = 'lighter';
+let animRunning = false;
+function startAnim(){
+  animRunning = true;
+  requestAnimationFrame(step);
+}
+
+function step(){
+  ctx.clearRect(0,0,W,H);
+  for (let i=particles.length-1;i>=0;i--){
+    const p = particles[i];
+    p.age++;
+    p.vy += 0.08; 
+    p.x += p.vx;
+    p.y += p.vy;
+    const t = p.age / p.life;
+    ctx.globalAlpha = Math.max(0, 1 - t);
+    ctx.fillStyle = p.color;
     ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.globalAlpha = this.alpha;
-    ctx.arc(this.x, this.y, 2.6, 0, Math.PI*2);
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
     ctx.fill();
     ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
+    if (p.age > p.life) particles.splice(i,1);
   }
+  if (particles.length>0) requestAnimationFrame(step);
+  else animRunning = false;
 }
 
-function launchFireworks(durationMs = 3000){
-  canvas.style.display = 'block';
-  particles = []; rockets = [];
-  let start = Date.now();
-
-  // spawn rockets periodically
-  const spawn = setInterval(()=>{
-    const sx = random(cw*0.1, cw*0.9);
-    const sy = ch + 10;
-    const tx = random(cw*0.2, cw*0.8);
-    const ty = random(ch*0.15, ch*0.45);
-    rockets.push(new Rocket(sx, sy, tx, ty));
-  }, 180);
-
-  function loop(){
-    ctx.clearRect(0,0,cw,ch);
-    // draw semi-transparent dark overlay for glow
-    ctx.fillStyle = 'rgba(8,6,6,0.06)';
-    ctx.fillRect(0,0,cw,ch);
-
-    for(let i=rockets.length-1;i>=0;i--){
-      rockets[i].update();
-      rockets[i].draw();
-      if(rockets[i].exploded) rockets.splice(i,1);
-    }
-    for(let i=particles.length-1;i>=0;i--){
-      particles[i].update();
-      particles[i].draw();
-      if(particles[i].alpha <= 0) particles.splice(i,1);
-    }
-    // stop condition
-    if(Date.now() - start > durationMs){
-      clearInterval(spawn);
-      // continue a bit until particles vanish
-      if(particles.length === 0 && rockets.length === 0){
-        cancelAnimationFrame(animFrame);
-        canvas.style.display = 'none';
-        resolveFireworks(); // show letter after
-        return;
-      }
-    }
-    animFrame = requestAnimationFrame(loop);
-  }
-  loop();
-
-  // Return a promise-like flow using a global setter
-  let resolved = false;
-  function resolveFireworks(){
-    if(resolved) return;
-    resolved = true;
-    // after finished, fade-in letter (handled elsewhere)
-    showLetterAfterFireworks();
-  }
-}
-
-/* ------------------------
-   Show letter after fireworks
-   ------------------------ */
-function showLetterAfterFireworks(){
-  // show heart quickly
-  heart.style.opacity = 1;
-  heart.style.transform = 'scale(1)';
-
-  // show letter with fade
-  const todayLetter = letters[day];
-  letterDiv.innerText = todayLetter.text;
-  letterDiv.style.opacity = 0;
-  letterDiv.style.display = 'block';
-  letterDiv.style.transition = 'opacity .6s ease, transform .6s ease';
-  letterDiv.style.transform = 'translateY(6px)';
-  setTimeout(()=>{
-    letterDiv.style.opacity = 1;
-    letterDiv.style.transform = 'translateY(0)';
-  },150);
-
-  // show next button after a little delay
-  setTimeout(()=>{
-    nextButtonWrap.style.display = 'block';
-  },700);
-}
-
-/* ------------------------
-   Answer check & wiring
-   ------------------------ */
-const submitBtn = document.getElementById('submitBtn');
-submitBtn.addEventListener('click', tryAnswer);
-document.getElementById('answerInput').addEventListener('keydown', function(e){
-  if(e.key === 'Enter') tryAnswer();
-});
-
-function tryAnswer(){
-  const todayLetter = letters[day];
-  const userAnswer = document.getElementById('answerInput').value.trim();
-  if(!userAnswer){
-    // gentle nudge
-    alert("Type your answer, Baccha ❤️");
-    return;
-  }
-  if(userAnswer.toLowerCase() === todayLetter.answer.toLowerCase()){
-    // correct: launch fireworks, then letter
-    puzzleDiv.style.display = 'none';
-    // small delay then play fireworks
-    setTimeout(()=>{ launchFireworks(3000); }, 150);
-  } else {
-    // incorrect
-    alert("Try again, Baccha ❤️");
-  }
-}
-
-/* ------------------------
-   Next button -> modal
-   ------------------------ */
-nextButton.addEventListener('click', function(){
-  modal.style.display = 'block';
-});
-closeModal.addEventListener('click', function(){
-  modal.style.display = 'none';
-});
-
-/* --------------
-   Accessibility: if day is last, change text
-   -------------- */
-if(day === letters.length - 1){
-  // last day
-  // when last letter revealed, change next button text
-  nextButton.addEventListener('click', function(){
-    modal.querySelector('p').innerText = "This was the last letter — I love you forever 💖";
-    modal.style.display = 'block';
-  });
-}
-
-/* ------------------------
-   Small polish: initial focus
-   ------------------------ */
-document.getElementById('answerInput').focus();
+// Initial Render
+render();
 
 </script>
 </body>
-</html>
+  </html>
