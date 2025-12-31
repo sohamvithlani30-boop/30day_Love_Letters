@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story - 0730</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    :root {
+        /* LUXURY BACKGROUND: Deep Wine / Velvet Red */
+        --bg-gradient: radial-gradient(circle at center, #580c1f 0%, #1a0005 100%);
+        
+        /* CARD: Dark Glass / Obsidian Look */
+        --card-bg: rgba(30, 0, 10, 0.85); 
+        
+        /* TEXT: Gold & Cream */
+        --text-color: #f3e5ab; /* Creamy White */
+        --highlight: #ffd700; /* Pure Gold */
+        --btn-color: #ffd700;
+    }
+
+    body, html {
+        margin: 0; padding: 0; width: 100%; height: 100%;
+        font-family: 'Playfair Display', serif;
+        background: var(--bg-gradient);
+        overflow: hidden;
+        color: var(--text-color);
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    /* --- GOLDEN EMBERS (Background) --- */
+    .orb {
+        position: absolute; border-radius: 50%;
+        background: radial-gradient(circle, #ffd700, transparent);
+        box-shadow: 0 0 15px #ffd700;
+        animation: floatUp linear infinite;
+        bottom: -50px; z-index: 1; opacity: 0;
+    }
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(0.5); opacity: 0; }
+        20% { opacity: 0.6; }
+        80% { opacity: 0.4; }
+        100% { transform: translateY(-120vh) scale(1); opacity: 0; }
+    }
+
+    /* --- PAGES CONTAINER --- */
+    .page {
+        display: none; width: 85%; max-width: 600px;
+        flex-direction: column; align-items: center; text-align: center;
+        z-index: 10; animation: fadeIn 1.5s ease;
+    }
+    .active { display: flex; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* --- THE LUXURY CARD --- */
+    .card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 40px; border-radius: 20px;
+        border: 1px solid rgba(255, 215, 0, 0.3); /* Gold Border */
+        box-shadow: 0 20px 70px rgba(0,0,0,0.5);
+        text-align: left;
+    }
+
+    h1 {
+        font-family: 'Dancing Script', cursive; font-size: 2.8rem;
+        margin-bottom: 20px; color: var(--highlight);
+        text-align: center; line-height: 1.2;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    p {
+        font-size: 1.15rem; line-height: 1.8; margin-bottom: 20px;
+        color: var(--text-color); font-weight: 400;
+        letter-spacing: 0.5px;
+    }
+
+    /* Gold Highlight Text */
+    .highlight { 
+        color: var(--highlight); font-weight: 700; 
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    /* --- GOLD BUTTONS --- */
+    .next-btn {
+        margin-top: 30px; padding: 15px 45px;
+        background: transparent; color: var(--highlight); 
+        border: 1px solid var(--highlight);
+        border-radius: 0px; /* Sharp corners for luxury feel */
+        font-family: 'Montserrat', sans-serif; letter-spacing: 2px;
+        font-weight: 600; font-size: 0.9rem; cursor: pointer;
+        transition: all 0.4s;
+        text-transform: uppercase;
+    }
+    .next-btn:hover { 
+        background: var(--highlight); color: #2b0a1d; 
+        box-shadow: 0 0 20px var(--highlight);
+    }
+
+    /* --- PAGE 4: COUNTDOWN --- */
+    .timer {
+        font-size: 4rem; font-weight: 700; margin: 20px 0;
+        color: var(--highlight); 
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        font-family: 'Playfair Display', serif;
+    }
+    .label { color: white; letter-spacing: 4px; font-weight: 300; opacity: 0.8; }
+
+    /* --- PAGE 5: FINAL CELEBRATION --- */
+    #fireworks { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+    
+    .final-msg { 
+        text-align: center; color: var(--text-color); 
+        font-size: 1.3rem; margin-top: 20px; font-style: italic;
+    }
+
+</style>
+</head>
+<body>
+
+    <!-- BACKGROUND GOLD EMBERS -->
+    <div id="lights-container"></div>
+    <canvas id="fireworks"></canvas>
+
+    <!-- PAGE 1: 2019 -->
+    <div class="page active" id="p1">
+        <div class="card">
+            <h1>The Beginning (2019)</h1>
+            <p>It feels like yesterday. Late 2019, 10:30 PM.</p>
+            <p>You asked the question, and my mind went blank. I didn't know what to say because I couldn't believe the girl of my dreams was choosing me.</p>
+            <p>I remember the silent video calls where we couldn't speak because your mom was around, but your eyes said everything. I remember the air kisses through the screen that felt more real than anything else.</p>
+            <p style="text-align:center; color: var(--highlight);">We were magic then.</p>
+        </div>
+        <button class="next-btn" onclick="nextPage(1)">Continue Journey</button>
+    </div>
+
+    <!-- PAGE 2: THE TATTOO -->
+    <div class="page" id="p2">
+        <div class="card">
+            <h1>The Anchor (0730)</h1>
+            <p>But love isn't always a straight line.</p>
+            <p>We walked through the silence. 1.5 years of being blocked. 1.5 years of me wondering if I would ever hear your voice again.</p>
+            <p>On <span class="highlight">May 30th, 2025</span>, I did something desperate. I tattooed <strong>0730</strong> on my skin.</p>
+            <p>It wasn't just ink. It was a spell to bring you back. It was me screaming to the universe that I belong to you. You came back, but the pain came too. Seeing you with others broke me daily, but I took every piece of heartbreak just to stay close to you.</p>
+        </div>
+        <button class="next-btn" onclick="nextPage(2)">Next Chapter</button>
+    </div>
+
+    <!-- PAGE 3: THE APOLOGY -->
+    <div class="page" id="p3">
+        <div class="card">
+            <h1>My Apology (2025)</h1>
+            <p>I know 2025 wasn't perfect.</p>
+            <p>I know I irritated you. I know sometimes my love feels heavy, overwhelming, or 'too much.' I am sorry for every time I made you angry when I only wanted to make you smile.</p>
+            <p>I am sorry for the chaos. But please know this: Even if my methods were wrong, my intention was always pure.</p>
+            <p>If a thousand tears of mine can buy just one small smile on your face... then every tear was worth it.</p>
+        </div>
+        <button class="next-btn" onclick="nextPage(3)">Go to Midnight</button>
+    </div>
+
+    <!-- PAGE 4: COUNTDOWN -->
+    <div class="page" id="p4">
+        <div class="label">WAITING FOR OUR YEAR</div>
+        <div class="timer" id="timer">00:00:00</div>
+        <div id="wait-msg" style="color: #f3e5ab; font-style: italic;">Leaving the pain behind...</div>
+        
+        <!-- ENTER BUTTON -->
+        <button class="next-btn" id="enter-btn" style="display:none; background: var(--highlight); color: #2b0a1d;" onclick="nextPage(4)">✨ Enter 2026 ✨</button>
+        
+        <!-- TEST BUTTON (Remove later) -->
+        <button onclick="unlockNewYear()" style="margin-top:50px; border:none; background:none; color:rgba(255,255,255,0.2); font-size:10px;">(Test Button)</button>
+    </div>
+
+    <!-- PAGE 5: 2026 -->
+    <div class="page" id="p5">
+        <h1 style="font-size: 3.5rem; color: var(--highlight); text-shadow: 0 0 30px #ffd700;">HAPPY NEW YEAR!</h1>
+        <div class="card">
+            <p style="text-align: center;">We have survived the storm.</p>
+            <p style="text-align: center;">I don't care what year it is on the calendar.</p>
+            <p style="text-align: center; color: var(--highlight);">You are the only year I want to live in.</p>
+            
+            <p class="final-msg" style="border-top: 1px solid rgba(255,215,0,0.3); padding-top: 20px;">
+                "I hope you take my name when someone asks if you have ever been loved."
+            </p>
+
+            <div style="text-align: right; margin-top: 30px;">
+                <span style="font-family:'Dancing Script'; font-size: 1.5rem; color: var(--highlight);">With love now and forever,<br>Soham Vithlani</span>
+            </div>
+        </div>
+    </div>
+
+<script>
+    /* --- NAVIGATION --- */
+    function nextPage(pageNum) {
+        document.getElementById('p' + pageNum).classList.remove('active');
+        document.getElementById('p' + (pageNum + 1)).classList.add('active');
+        if(pageNum === 4) startFireworks(); 
+    }
+
+    /* --- BACKGROUND GOLD EMBERS --- */
+    const lightContainer = document.getElementById('lights-container');
+    for(let i=0; i<30; i++){
+        let l = document.createElement('div');
+        l.className = 'orb';
+        l.style.left = Math.random() * 100 + 'vw';
+        l.style.width = (Math.random() * 10 + 5) + 'px';
+        l.style.height = l.style.width;
+        l.style.animationDuration = (Math.random() * 10 + 5) + 's';
+        lightContainer.appendChild(l);
+    }
+
+    /* --- COUNTDOWN --- */
+    const targetDate = new Date("January 1, 2026 00:00:00").getTime();
+    
+    const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance > 0) {
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("timer").innerText = 
+                (h<10?"0"+h:h) + ":" + (m<10?"0"+m:m) + ":" + (s<10?"0"+s:s);
+        } else {
+            unlockNewYear();
+        }
+    }, 1000);
+
+    function unlockNewYear() {
+        clearInterval(interval);
+        document.getElementById("timer").innerText = "00:00:00";
+        document.getElementById("wait-msg").style.display = 'none';
+        document.getElementById("enter-btn").style.display = 'block';
+    }
+
+    /* --- FIREWORKS (GOLD & RED) --- */
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let isRunning = false;
+
+    function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function startFireworks(){
+        isRunning = true;
+        loop();
+        setInterval(() => { if(isRunning) createBurst(); }, 500);
+    }
+
+    function createBurst(){
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * (canvas.height/2);
+        // Luxury Colors: Gold, White, Soft Red
+        const colors = ['#ffd700', '#ffffff', '#ffeb3b', '#ff6b6b']; 
+        for(let i=0; i<50; i++){
+            particles.push({
+                x: x, y: y,
+                vx: (Math.random() - 0.5) * 15,
+                vy: (Math.random() - 0.5) * 15,
+                life: 100 + Math.random()*50,
+                color: colors[Math.floor(Math.random()*colors.length)]
+            });
+        }
+    }
+
+    function loop(){
+        if(!isRunning && particles.length === 0) return;
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        for(let i=0; i<particles.length; i++){
+            let p = particles[i];
+            p.x += p.vx; p.y += p.vy; p.life--; p.vy += 0.2; p.vx *= 0.96;
+            ctx.globalAlpha = p.life / 100;
+            ctx.fillStyle = p.color;
+            ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill();
+        }
+        particles = particles.filter(p => p.life > 0);
+        requestAnimationFrame(loop);
+    }
+</script>
+
+</body>
+  </html>
